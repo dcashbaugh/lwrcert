@@ -157,6 +157,9 @@
         // iterate through your table to set the marker to lat/long values for each row
 
         data.forEach(function (row) {
+          
+          if(row.indexOf(input) != -1) {
+          
           // create a variable for your popup and populate your popup with information from your table
           var popup = new mapboxgl.Popup().setHTML(
             `<h3>` +
@@ -187,7 +190,7 @@
           // create a variable for your markup and add it to the map
           var marker = new mapboxgl.Marker({
             color: "purple",
-
+          }
           })
             .setLngLat([row.Longitude, row.Latitude])
             .setPopup(popup)
