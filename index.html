@@ -158,8 +158,6 @@
 
         data.forEach(function (row) {
           
-          if(row.indexOf(input) != -1) {
-          
             // create a variable for your popup and populate your popup with information from your table
             var popup = new mapboxgl.Popup().setHTML(
               `<h3>` +
@@ -194,7 +192,6 @@
             .setLngLat([row.Longitude, row.Latitude])
             .setPopup(popup)
             .addTo(map); // add the marker to the map
-          };
         });
       }
     </script>
