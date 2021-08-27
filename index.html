@@ -160,41 +160,41 @@
           
           if(row.indexOf(input) != -1) {
           
-          // create a variable for your popup and populate your popup with information from your table
-          var popup = new mapboxgl.Popup().setHTML(
-            `<h3>` +
-              row.Neighborhood +
-              `</h3>` +
-              "<h4>" +
-              "<b>" +
-              "Village: " +
-              "</b>" +
-              row.Village +
-              "<br>" +
-              "<b>" +
-              "Zone: " +
-              "</b>" +
-              row.Zone +
-              "<br>" +
-              "<b>" +
-              "Residences: " +
-              "</b>" +
-              row.Residences +
-              "<br>" +
-              "<b>" +
-              "Status: " +
-              "</b>" +
-              "</h4>"
-          ); // use the table to populate your popup with text
+            // create a variable for your popup and populate your popup with information from your table
+            var popup = new mapboxgl.Popup().setHTML(
+              `<h3>` +
+                row.Neighborhood +
+                `</h3>` +
+                "<h4>" +
+                "<b>" +
+                "Village: " +
+                "</b>" +
+                row.Village +
+                "<br>" +
+                "<b>" +
+                "Zone: " +
+                "</b>" +
+                row.Zone +
+                "<br>" +
+                "<b>" +
+                "Residences: " +
+                "</b>" +
+                row.Residences +
+                "<br>" +
+                "<b>" +
+                "Status: " +
+                "</b>" +
+                "</h4>"
+            ); // use the table to populate your popup with text
 
           // create a variable for your markup and add it to the map
           var marker = new mapboxgl.Marker({
             color: "purple",
-          }
           })
             .setLngLat([row.Longitude, row.Latitude])
             .setPopup(popup)
             .addTo(map); // add the marker to the map
+          };
         });
       }
     </script>
