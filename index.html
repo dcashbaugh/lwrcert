@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>LWR CERT Zone Map</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <style>
+
+
+
+    body {
+      background: #404040;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      border-left: 1px solid #fff;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      bottom: 0;
+    }
+
+    .mapboxgl-popup {
+      padding-bottom: 5px;
+    }
+
+
+      .mapboxgl-popup-close-button {
+        font-size: 16px;
+        font-family: Tahoma,Verdana, sans-serif;
+        border-top-right-radius: 12px; 
+        margin-top: -10px;
+        font-weight: bold
+      }
+
+      .mapboxgl-popup-close-button:hover {
+        color: #999; 
+
+        background-color: white; 
+        border-top-right-radius: 12px;} 
+
+
+      @keyframes fadein {from {opacity: 0;} to {opacity: 1;}}
+      .mapboxgl-popup {animation: fadein 0.7s;}
+      .mapboxgl-popup-content {
+        max-width: 250px; 
+        min-width: 50px; 
+        border-radius: 12px; 
+        padding: 13px 19px; 
+        box-shadow: 0 3px 14px rgba(0,0,0,0.4); 
+        min-width: 159px;}
+    .mapboxgl-popup-content {
+      font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", Sans-serif;
+      padding: 0;
+      width: 250px;
+    }
+
+    .mapboxgl-popup-content-wrapper {
+      padding: 1%;
+    }
+
+      /* background:  the color of the banner in the pop-up;
+         border radius:  curvature of the banner;
+         margin top:  of the banner from top of pop-up;
+         color:  font color of border text;
+      */
+      .mapboxgl-popup-content h3 {
+        background: #91c949; 
+        font-size: 20px;
+        width: 250px;
+        min-height: 25px;
+        text-align: center;
+        color: #000000;
+        display: block;
+        padding-top: 5px;
+        border-radius: 12px 12px 0px 0px;
+/*        border-color:  #f000000; */
+        font-weight: 700;
+        margin-top: -13px;
+        margin-right: 0px;
+        margin-left:  0px;
+        margin-bottom: -20;
+      }
+      
+      .mapboxgl-popup-content h4 {
+        font-size: 14px;
+        width: 200px;
+        margin-left:  10px;
+        min-height: 25px;
+        font-weight: 400;
+      }
+
+    .mapboxgl-container {
+      cursor: pointer;
+    }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+      margin-top: 3px;
+    }
+
+    .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+      border-bottom-color: rgb(61, 59, 59);
+    }
+  </style>
+
+  <body>
+    <div id="map"></div>
+    <script>
+      var transformRequest = (url, resourceType) => {
+        var isMapboxRequest =
+          url.slice(8, 22) === "api.mapbox.com" ||
+          url.slice(10, 26) === "tiles.mapbox.com";
+        return {
+          url: isMapboxRequest
+            ? url.replace("?", "?pluginName=sheetMapper&")
+            : url,
+        };
+      };
+
+
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiZGNhc2hiYXVnaCIsImEiOiJja3F3cTJicGYwcW5zMzNyZzZ5eHRpaXB2In0.rq1QJyvHv84T1lp0CGUz3Q"; //Mapbox token
+      var map = new mapboxgl.Map({
+        container: "map", // container id
+        style: "mapbox://styles/dcashbaugh/cksd6lasb1rtu17n1d4phghqc", //stylesheet location
+        center: [-82.4105,  27.409], // starting position
+        zoom: 13.39, // starting zoom
+        transformRequest: transformRequest,
+      });
+
+      map.on("load", function () {
+        init();
+      });
+
+      // YOUR TURN: Add the link to your shared spreadsheet to allow D3 to access your table
+      function init() {
+        d3.csv(
+          "https://lwrneighborhoods.s3.amazonaws.com/lwrcertneighborhoods.csv",
+          addPoints
+        );
+      }
+
+      // create a function called addPoints that iterates through your table (row by row) to create markers and popups arn:aws:s3:::lwrneighborhoods
+      function addPoints(data) {
+        // iterate through your table to set the marker to lat/long values for each row
+
+        data.forEach(function (row) {
+          // create a variable for your popup and populate your popup with information from your table
+          var popup = new mapboxgl.Popup().setHTML(
+            `<h3>` +
+              row.Neighborhood +
+              `</h3>` +
+              "<h4>" +
+              "<b>" +
+              "Village: " +
+              "</b>" +
+              row.Village +
+              "<br>" +
+              "<b>" +
+              "Zone: " +
+              "</b>" +
+              row.Zone +
+              "<br>" +
+              "<b>" +
+              "Residences: " +
+              "</b>" +
+              row.Residences +
+              "<br>" +
+              "<b>" +
+              "Status: " +
+              "</b>" +
+              row.Status +
+              "</h4>"
+          ); // use the table to populate your popup with text
+
+          // create a variable for your markup and add it to the map
+          var marker = new mapboxgl.Marker({
+            color: 
+
+               ['match', ['get', 'user_Neighborhood'], 
+               'Silverwood', 'yellow',
+               '11', 'yellow',
+               '32', 'purple',
+               '24','yellow',
+               'purple'],
+
+//            color: "purple",
+
+          })
+            .setLngLat([row.Longitude, row.Latitude])
+            .setPopup(popup)
+            .addTo(map); // add the marker to the map
+        });
+      }
+    </script>
+  </body>
+</html>
