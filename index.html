@@ -147,7 +147,7 @@
       // YOUR TURN: Add the link to your shared spreadsheet to allow D3 to access your table
       function init() {
         d3.csv(
-          "https://lwrneighborhoods.s3.amazonaws.com/lwrcertneighborhoods.csv",
+          "https://lwrneighborhoods.s3.amazonaws.com/activationSheet.csv",
           addPoints
         );
       }
@@ -157,37 +157,60 @@
         // iterate through your table to set the marker to lat/long values for each row
 
         data.forEach(function (row) {
-          
-            // create a variable for your popup and populate your popup with information from your table
-            var popup = new mapboxgl.Popup().setHTML(
-              `<h3>` +
-                row.Neighborhood +
-                `</h3>` +
-                "<h4>" +
-                "<b>" +
-                "Village: " +
-                "</b>" +
-                row.Village +
-                "<br>" +
-                "<b>" +
-                "Zone: " +
-                "</b>" +
-                row.Zone +
-                "<br>" +
-                "<b>" +
-                "Residences: " +
-                "</b>" +
-                row.Residences +
-                "<br>" +
-                "<b>" +
-                "Status: " +
-                "</b>" +
-                "</h4>"
-            ); // use the table to populate your popup with text
+          // create a variable for your popup and populate your popup with information from your table
+        var statusColor = 'purple'
+        switch(row.Status) {
+          case "Complete":
+            statusColor = '#009933';
+            break;
+          case "Assistance":
+            statusColor = '#ff0000';
+            break;
+          case "Assigned":
+            statusColor = '#99ccff';
+            break;
+          case  "In Progress":
+            statusColor = '#3399ff';
+            break;
+          case "Unassigned":
+            statusColor = '#ff9900';
+            break;
+          default:
+            statusColor = 'purple';
+        }
 
+          var popup = new mapboxgl.Popup().setHTML(
+            "<h3>" +
+              row.Neighborhood +
+              "</h3>" +
+              "<h4>" +
+              "<b>" +
+              "Status: " +
+              "</b>" +
+              row.Status +
+              "<br>" +
+              "<b>" +
+              "Assigned Team: " +
+              "</b>" +
+              row.Team +
+              "<br>" + "<br>" +
+              "<b>" +
+              "Zone: " + 
+              "</b>" +
+              row.Zone +
+              "<br>" +
+              "<b>" +
+              "Residences: " +
+              "</b>" +
+              row.Residences +
+              "</h4>"
+          ); // use the table to populate your popup with text
+//         var status = row.Status,
           // create a variable for your markup and add it to the map
           var marker = new mapboxgl.Marker({
-            color: "purple",
+            color: statusColor,
+
+
           })
             .setLngLat([row.Longitude, row.Latitude])
             .setPopup(popup)
